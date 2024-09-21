@@ -1,5 +1,6 @@
 import pygame
 from os.path import join
+from random import choice, uniform
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 SIZE = {'paddle': (40,100), 'ball': (30,30)}
