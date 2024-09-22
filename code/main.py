@@ -1,7 +1,9 @@
 import pygame.time
 import json
+
 from settings import *
 from sprites import Player, Ball, Opponent
+from groups import AllSprites
 
 
 class Game:
@@ -11,7 +13,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = AllSprites()
         self.paddle_sprites = pygame.sprite.Group()
 
         self.player = Player((self.all_sprites, self.paddle_sprites))
@@ -53,7 +55,7 @@ class Game:
             self.screen.fill(COLORS['bg'])
             self.display_score()
             self.all_sprites.update(dt)
-            self.all_sprites.draw(self.screen)
+            self.all_sprites.draw()
             pygame.display.flip()
 
 
