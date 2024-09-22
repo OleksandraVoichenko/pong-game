@@ -1,5 +1,5 @@
 import pygame.time
-
+import json
 from settings import *
 from sprites import Player, Ball, Opponent
 
@@ -18,7 +18,11 @@ class Game:
         self.ball = Ball(self.all_sprites, self.paddle_sprites, self.update_score)
         self.opponent = Opponent((self.all_sprites, self.paddle_sprites), self.ball)
 
-        self.score = {'player': 0, 'opponent': 0}
+        try:
+            with open(join('..', 'data', 'score.txt')) as file:
+                self.score = json.load(file)
+        except:
+            self.score = {'player': 0, 'opponent': 0}
         self.font = pygame.font.Font(None, 160)
 
 
@@ -43,6 +47,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                    with open(join('..', 'data', 'score.txt'), 'w') as file:
+                        json.dump(self.score, file)
 
             self.screen.fill(COLORS['bg'])
             self.display_score()

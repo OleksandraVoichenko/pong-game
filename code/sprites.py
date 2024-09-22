@@ -1,4 +1,5 @@
 import pygame.sprite
+
 from settings import *
 
 class Paddle(pygame.sprite.Sprite):
@@ -71,11 +72,15 @@ class Ball(pygame.sprite.Sprite):
         self.dir = pygame.Vector2(choice((-1, 1)), uniform(0.7, 0.8) * choice((-1, 1)))
         self.speed = SPEED['ball']
 
+        self.start_time = pygame.time.get_ticks()
+        self.duration = 1300
+        self.speed_modifier = 1
+
 
     def move(self, dt):
-        self.rect.x += self.dir.x * self.speed * dt
+        self.rect.x += self.dir.x * self.speed * dt * self.speed_modifier
         self.collision('horizontal')
-        self.rect.y += self.dir.y * self.speed * dt
+        self.rect.y += self.dir.y * self.speed * dt * self.speed_modifier
         self.collision('vertical')
 
 
@@ -111,9 +116,18 @@ class Ball(pygame.sprite.Sprite):
     def reset(self):
         self.rect.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
         self.dir = pygame.Vector2(choice((-1, 1)), uniform(0.7, 0.8) * choice((-1, 1)))
+        self.start_time = pygame.time.get_ticks()
+
+
+    def timer(self):
+        if pygame.time.get_ticks() - self.start_time >= self.duration:
+            self.speed_modifier = 1
+        else:
+            self.speed_modifier = 0
 
 
     def update(self, dt):
         self.old_rect = self.rect.copy()
+        self.timer()
         self.move(dt)
         self.wall_collision()
