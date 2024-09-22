@@ -9,6 +9,8 @@ class AllSprites(pygame.sprite.Group):
 
 
     def draw(self, **kwargs):
+        """Custom draw method that also creates shadows for the objects"""
+
         for sprite in self:
             for i in range(5):
                 self.screen.blit(sprite.shadow_surf, sprite.rect.topleft + pygame.Vector2(i, i))
